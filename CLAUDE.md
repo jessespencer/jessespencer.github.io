@@ -8,7 +8,7 @@ Static single-page portfolio site. No framework, no build step — just `index.h
 
 - HTML, CSS, vanilla JS (all in `index.html`)
 - No package manager, no dependencies
-- Hosted on GitHub Pages with custom domain (`jessedestroys.com`)
+- Hosted on GitHub Pages with custom domain (`jessedestroys.com`). This repo is the user site (`jessespencer/jessespencer.github.io`), so every project repo's Pages site is served at `jessedestroys.com/<repo>/` — link projects there, not at `github.io`, and don't add a top-level folder named like a project repo
 - `covers/` holds the thumbnail template, render script and source shots — excluded from the Pages build
 - `_config.yml` only excludes repo docs and `covers/` from the Pages build — add any new top-level `.md` there, or Pages will publish it
 - `AGENTS.md` is a symlink to this file (for Codex) — edit `CLAUDE.md`, never the link

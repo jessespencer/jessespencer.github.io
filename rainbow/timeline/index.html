@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lineage has moved</title>
+  <!-- Lineage moved from /rainbow/timeline/ to /bible/lineage/. Keeps ?figure= and #hash, and retires the old offline copy. -->
+  <script>
+    const target = '/bible/lineage/' + location.search + location.hash;
+    const retire = navigator.serviceWorker
+      ? navigator.serviceWorker.getRegistrations().then((all) => Promise.all(all.filter((r) => new URL(r.scope).pathname.startsWith('/rainbow/')).map((r) => r.unregister())))
+      : Promise.resolve();
+    Promise.race([retire, new Promise((done) => setTimeout(done, 500))]).finally(() => location.replace(target));
+  </script>
+  <meta http-equiv="refresh" content="1; url=/bible/lineage/" />
+  <link rel="canonical" href="https://jessedestroys.com/bible/lineage/" />
+  <style>html { background: #020611; color-scheme: dark; }</style>
+</head>
+<body>
+  <noscript><a href="/bible/lineage/">Lineage has moved to /bible/lineage/</a></noscript>
+</body>
+</html>

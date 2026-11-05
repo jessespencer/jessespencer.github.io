@@ -418,6 +418,41 @@
         }, 400);
       }, 6000);
     })();
+
+    // Animated favicon: browsers only show a GIF favicon's first frame,
+    // so cycle frames from a sprite strip through a canvas instead
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var size = 64;
+      var frameCount = 8;
+      var sprite = new Image();
+
+      sprite.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = canvas.height = size;
+        var ctx = canvas.getContext('2d');
+
+        var icons = document.querySelectorAll('link[rel="icon"]');
+        for (var j = 0; j < icons.length; j++) icons[j].remove();
+        var link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/png';
+        document.head.appendChild(link);
+
+        var frame = 0;
+        function draw() {
+          ctx.clearRect(0, 0, size, size);
+          ctx.drawImage(sprite, frame * size, 0, size, size, 0, 0, size, size);
+          link.href = canvas.toDataURL('image/png');
+          frame = (frame + 1) % frameCount;
+        }
+
+        draw();
+        setInterval(draw, 200);
+      };
+      sprite.src = 'favicon-frames.png';
+    })();
   </script>
 
 </body>

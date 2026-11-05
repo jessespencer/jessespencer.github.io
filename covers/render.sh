@@ -21,8 +21,10 @@ only=$1
 
 render zero             "zoom=1.2&y=45"
 render jessewspencer    "zoom=1.15&x=30&y=60"
+render glider           "zoom=1.05&y=62"
 render laser-head       "zoom=1.6&x=0&y=90"
-render rainbow          "zoom=1.2&y=62"
+render atlas            "zoom=1.3&y=60"
+render lineage          "zoom=1&y=45"
 render constellation    "zoom=1.4&x=38&y=55"
 render five             "zoom=1.3&x=0&y=14"
 render keyboard-ui      "zoom=2.1&y=50"

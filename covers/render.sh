@@ -22,7 +22,7 @@ only=$1
 render zero             "zoom=1.2&y=45"
 render jessewspencer    "zoom=1.15&x=30&y=60"
 render glider           "zoom=1.05&y=62"
-render laser-head       "zoom=1.6&x=0&y=90"
+render laser-head       "zoom=1&x=50&y=40"
 render atlas            "zoom=1.3&y=60"
 render lineage          "zoom=1&y=45"
 render by-heart         "zoom=1.25&x=50&y=42"

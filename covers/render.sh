@@ -20,6 +20,8 @@ render() {
 only=$1
 
 render zero             "zoom=1.2&y=45"
+render park-pulse       "zoom=1.1&x=50&y=30"
+render 24-hours         "zoom=1.27&x=50&y=50"
 render jessewspencer    "zoom=1.15&x=30&y=60"
 render glider           "zoom=1.05&y=62"
 render laser-head       "zoom=1&x=50&y=40"

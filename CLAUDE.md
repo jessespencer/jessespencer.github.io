@@ -8,7 +8,7 @@ Static single-page portfolio site. No framework, no build step — just `index.h
 
 - HTML, CSS, vanilla JS (all in `index.html`)
 - No package manager, no dependencies
-- Hosted on GitHub Pages with custom domain (`jessespencer.dev`, formerly `jessedestroys.com`; Zero still lives on its own subdomain, `zero.jessedestroys.com`). This repo is the user site (`jessespencer/jessespencer.github.io`), so every project repo's Pages site is served at `jessespencer.dev/<repo>/` — link projects there, not at `github.io`, and don't add a top-level folder named like a project repo. The one exception is `rainbow/`: the old address of the Bible apps, which now live in the `bible` repo. It holds only redirect pages (Atlas and `timeline/` for Lineage), so old links keep working
+- Hosted on GitHub Pages with custom domain (`jessespencer.dev`, formerly `jessedestroys.com`, which Cloudflare now 301s here path for path; Zero is a Cloudflare Worker at `zero.jessespencer.dev`). This repo is the user site (`jessespencer/jessespencer.github.io`), so every project repo's Pages site is served at `jessespencer.dev/<repo>/` — link projects there, not at `github.io`, and don't add a top-level folder named like a project repo. The one exception is `rainbow/`: the old address of the Bible apps, which now live in the `bible` repo. It holds only redirect pages (Atlas and `timeline/` for Lineage), so old links keep working
 - `covers/` holds the thumbnail template, render script and source shots — excluded from the Pages build
 - `_config.yml` only excludes repo docs and `covers/` from the Pages build — add any new top-level `.md` there, or Pages will publish it
 - `AGENTS.md` is a symlink to this file (for Codex) — edit `CLAUDE.md`, never the link

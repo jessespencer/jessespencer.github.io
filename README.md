@@ -1,6 +1,6 @@
 # Jesse Destroys
 
-Personal case study portfolio and landing page at [jessedestroys.com](https://jessedestroys.com).
+Personal case study portfolio and landing page at [jessespencer.dev](https://jessespencer.dev).
 
 ## What It Is
 

@@ -1,0 +1,26 @@
+# Cover manifest: one project per line, read by capture.sh and render.sh.
+#
+#   slug   url   crop
+#
+# slug  matches images/<slug>.jpg and covers/shots/<slug>.jpg
+# url   live page capture.sh shoots (1440×900, 2x, dark mode). Use a path or query to
+#       land on the best state. "-" means the shot is staged by hand: capture.sh skips
+#       it and render.sh only re-crops the existing shot.
+# crop  query for template.html: zoom (scale past cover fit), x and y (focal point, %).
+#
+# Order here is the order covers render in; keep it matching index.html.
+
+zero              https://zero.jessespencer.dev                  zoom=1.2&y=45
+park-pulse        https://jessespencer.dev/park-pulse/           zoom=1.1&x=50&y=30
+24-hours          https://jessespencer.dev/24-hours/             zoom=1.27&x=50&y=50
+jessewspencer     https://www.jessewspencer.com                  zoom=1.15&x=30&y=60
+glider            https://jessespencer.dev/glider/               zoom=1.05&y=62
+laser-head        -                                              zoom=1&x=50&y=40
+atlas             https://jessespencer.dev/bible/atlas/          zoom=1.3&y=60
+lineage           https://jessespencer.dev/bible/lineage/        zoom=1&y=45
+by-heart          https://jessespencer.dev/bible/byheart/        zoom=1.25&x=50&y=42
+constellation     https://jessespencer.dev/constellation/        zoom=1.4&x=38&y=55
+five              https://jessespencer.dev/five/                 zoom=1.3&x=0&y=14
+keyboard-ui       https://jessespencer.dev/keyboard-ui/          zoom=2.1&y=50
+skeuo-ui          https://jessespencer.dev/skeuo-ui/             zoom=1.55&y=50
+brooding-hopster  -                                              zoom=1

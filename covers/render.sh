@@ -1,35 +1,26 @@
 #!/bin/sh
-# Renders every cover from covers/template.html into images/ as a 1600×840 JPEG.
+# Renders covers from covers/shots/ through covers/template.html into images/ as 1600×840 JPEGs.
+# Crops come from covers/covers.txt.
 # Usage: covers/render.sh [slug]  (no slug renders them all)
 set -e
 cd "$(dirname "$0")/.."
+. covers/lib.sh
 
-chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+chrome=$(find_chrome)
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
-render() {
-  slug=$1
-  [ -z "$only" ] || [ "$only" = "$slug" ] || return 0
-  "$chrome" --headless --hide-scrollbars --window-size=800,420 --force-device-scale-factor=2 \
-    --screenshot="$tmp/$slug.png" "file://$PWD/covers/template.html?shot=$slug&$2" 2>/dev/null
-  sips -s format jpeg -s formatOptions 85 "$tmp/$slug.png" --out "images/$slug.jpg" >/dev/null
+found=
+while read -r slug url crop; do
+  [ -n "$slug" ] || continue  # an empty manifest match still yields one blank line
+  found=1
+  [ -f "covers/shots/$slug.jpg" ] || { echo "skip $slug: no covers/shots/$slug.jpg" >&2; continue; }
+  "$chrome" --headless $CHROME_FLAGS --hide-scrollbars --window-size=800,420 --force-device-scale-factor=2 \
+    --screenshot="$tmp/$slug.png" "file://$PWD/covers/template.html?shot=$slug&$crop" 2>/dev/null
+  to_jpeg "$tmp/$slug.png" "images/$slug.jpg" 85
   echo "images/$slug.jpg"
-}
+done <<EOF
+$(manifest "$1")
+EOF
 
-only=$1
-
-render zero             "zoom=1.2&y=45"
-render park-pulse       "zoom=1.1&x=50&y=30"
-render 24-hours         "zoom=1.27&x=50&y=50"
-render jessewspencer    "zoom=1.15&x=30&y=60"
-render glider           "zoom=1.05&y=62"
-render laser-head       "zoom=1&x=50&y=40"
-render atlas            "zoom=1.3&y=60"
-render lineage          "zoom=1&y=45"
-render by-heart         "zoom=1.25&x=50&y=42"
-render constellation    "zoom=1.4&x=38&y=55"
-render five             "zoom=1.3&x=0&y=14"
-render keyboard-ui      "zoom=2.1&y=50"
-render skeuo-ui         "zoom=1.55&y=50"
-render brooding-hopster "zoom=1"
+[ -n "$found" ] || { echo "No cover named '$1' in covers/covers.txt" >&2; exit 1; }

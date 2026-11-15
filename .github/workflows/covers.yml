@@ -1,0 +1,73 @@
+# Refreshes project covers from their live sites and opens a PR with the new images.
+#
+# Triggers:
+# - By hand: Actions → Refresh covers → Run workflow (slug blank = every project with a URL).
+# - From a project's deploy: a repository_dispatch of type "project-deployed" with
+#   client_payload.slug (see "Covers" in CLAUDE.md for the step to add to a project).
+#
+# Needs: Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests".
+name: Refresh covers
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: Project slug from covers/covers.txt (blank refreshes every project with a URL)
+        required: false
+        default: ''
+  repository_dispatch:
+    types: [project-deployed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: covers
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      SLUG: ${{ github.event.inputs.slug || github.event.client_payload.slug }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check slug
+        run: |
+          case "$SLUG" in
+            *[!a-z0-9-]*) echo "Invalid slug: $SLUG" >&2; exit 1 ;;
+          esac
+
+      - name: Wait for the project's Pages deploy to go live
+        if: github.event_name == 'repository_dispatch'
+        run: sleep 90
+
+      - name: Install ImageMagick
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
+
+      - name: Capture and render
+        env:
+          CHROME_FLAGS: --no-sandbox
+        run: covers/capture.sh "$SLUG"
+
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add images covers/shots
+          if git diff --cached --quiet; then
+            echo "Covers unchanged; nothing to open."
+            exit 0
+          fi
+          what=${SLUG:-all}
+          branch="covers/refresh-$what-$GITHUB_RUN_ID"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -q -m "chore: refresh $what cover from the live site"
+          git push -q origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "chore: refresh $what cover from the live site" \
+            --body "Captured by the Refresh covers workflow (run $GITHUB_RUN_ID, trigger: $GITHUB_EVENT_NAME). Check the new image in images/ before merging; merging deploys it."

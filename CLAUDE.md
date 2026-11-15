@@ -44,7 +44,7 @@ To add a new case study, duplicate an `<article class="experiment">` block and u
 4. `.experiment-link` — optional external URL
 5. Embed: either an image thumbnail or an iframe in `.embed-wrap`. Thumbnails are 1600×840 JPEG covers in `images/`, all rendered from `covers/template.html` so the set stays uniform — never drop in a raw screenshot or a site's `og:image`:
    - Add a line to `covers/covers.txt`: slug, live URL (a path or query can pick the best state) and crop (`zoom`, `x`, `y`, so the subject fills the card, especially on sparse pages)
-   - Run `covers/capture.sh <slug>`: it shoots the URL at 1440×900, 2x, dark mode into `covers/shots/<slug>.jpg`, then renders `images/<slug>.jpg`. To adjust only the crop, edit the manifest and run `covers/render.sh <slug>`
+   - Run `covers/capture.sh <slug>`: it shoots the URL at 1440×900, 2x, dark mode into `covers/shots/<slug>.jpg`, then renders `images/<slug>.jpg`. It needs Node 22+: `covers/shoot.mjs` drives Chrome over CDP and waits in real time (8s after load, `COVER_WAIT_MS` to change it), so requestAnimationFrame intros finish before the shot. To adjust only the crop, edit the manifest and run `covers/render.sh <slug>`
    - Shots that need staging (a light-only page on a dark background, a specific in-game moment) get url `-`: capture them by hand into `covers/shots/`; the scripts and CI never re-shoot them
 
 ## Covers
